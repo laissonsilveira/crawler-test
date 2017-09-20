@@ -3,4 +3,5 @@ package-lock.json
 config-db.json
 screenshots/
 .idea/
-.directory/
+/.directory
+node_modules/
