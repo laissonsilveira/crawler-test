@@ -1,0 +1,21 @@
+{
+  "browser": {
+    "args": [
+      "--start-maximized",
+      "--hide-scrollbars",
+      "--headless",
+      "--disable-gpu"
+    ],
+    "ignoreArgs": false
+  },
+  "screenshot": {
+    "path": "screenshots",
+    "timeToDelete": {
+      "amount": 2,
+      "time": "weeks"
+    }
+  },
+  "timeout": {
+    "elementLocated": 10000
+  }
+}
