@@ -1,7 +1,7 @@
 'use strict';
 
 const target = {
-    url: "http://ceat.trt15.jus.br/ceat/certidaoAction.seam",
+    url: "http://admin.simplifyzone.com.br/app/#!/login",
     execute: (crawlerTest, sendResult) => {
         let result = {
             url: target.url
@@ -11,8 +11,8 @@ const target = {
 
         crawlerTest.takeScreenshot();
 
-        crawlerTest.getText('//div[@class="dr-pnl-h rich-panel-header "]').then(title => {
-            result.data = title;
+        crawlerTest.getText('//div[contains(@class,"text-simplify")]/small').then(version => {
+            result.version = version;
         });
 
         crawlerTest.flow(() => {
