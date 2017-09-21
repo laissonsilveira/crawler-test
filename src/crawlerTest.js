@@ -4,6 +4,7 @@ const {Core} = require('./core');
 const TIMEOUT = 30000;
 const LOGGER = require('winston');
 const Screenshot = require('../util/screenshot');
+const ClientHelper = require('../util/client-helper');
 
 exports.CrawlerTest = class {
 
@@ -54,6 +55,10 @@ exports.CrawlerTest = class {
 
     takeScreenshot() {
         new Screenshot(this.driver).take();
+    }
+
+    download(link) {
+
     }
 
     start() {

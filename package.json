@@ -9,7 +9,10 @@
     "chromedriver": "^2.31.0",
     "moment": "^2.18.1",
     "phantomjs": "^2.1.7",
+    "querystring": "^0.2.0",
+    "request": "^2.82.0",
     "selenium-webdriver": "^3.5.0",
+    "textract": "^2.2.0",
     "winston": "^2.3.1"
   },
   "scripts": {
