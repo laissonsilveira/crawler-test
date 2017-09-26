@@ -2,66 +2,81 @@
     'use strict';
 
     const {Builder, Capabilities, logging, By, until, promise} = require('selenium-webdriver');
-    const config = require('../config-app.json');
+    const _CONFIG = require('../config-app.json');
+    const LOGGER = require('winston');
+    const path = require('path');
 
     class Core {
 
         constructor(params) {
             this.params = params;
-            this.configure();
+            this.driver = this.__webdriverBuilder(process.argv[3])
         }
 
-        configure() {
+        __getPhantomDriver() {
+            let caps = Capabilities.phantomjs();
+            let args = [
+                '--ssl-protocol=any',
+                '--ignore-ssl-errors=true',
+                '--web-security=false',
+                // '--disk-cache=false',
+                // '--disk-cache-path=cache',
+                '--remote-debugger-port=8000',
+                '--remote-debugger-autorun=yes'
+            ];
 
-            logging.installConsoleHandler();
-            logging.getLogger('webdriver.http').setLevel(logging.Level.ALL);
+            // proxyServer && args.push('--proxy=' + proxyServer);
+            // proxyAuth && args.push('--proxy-auth=' + proxyAuth);
 
-            const builder = new Builder();
-            // this.configureChrome(builder);
-            this.configurePhantom(builder);
-            this.driver = builder.build();
-        }
-
-        configureChrome(builder) {
-
-            let defaultArgs = config.browser.args;
-
-            if (config.browser.ignoreArgs) {
-                defaultArgs = [];
-            }
-
-            if (this.params.args) {
-                defaultArgs = defaultArgs.concat(this.params.args)
-            }
-
-            const chromeCapabilities = Capabilities.chrome();
-            // chromeCapabilities.set('chromeOptions', {"args": defaultArgs});
-            builder.withCapabilities(chromeCapabilities);
-
-        }
-
-        configurePhantom(builder) {
-
-            const caps = Capabilities.phantomjs();
-            caps.set('phantomjs.cli.args', [
-                "--ssl-protocol=any",
-                "--ignore-ssl-errors=true",
-                "--web-security=false",
-                "--remote-debugger-port=9000",
-                "--remote-debugger-autorun=yes",
-                // "--disk-cache=true",
-                // "--max-disk-cache-size=10000",
-                // "--disk-cache-path=cache",
-                // "--proxy-type=none"
-            ]);
-            // caps.set('phantomjs.page.settings.userAgent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
+            caps.set("phantomjs.cli.args", args);
+            caps.set('phantomjs.page.settings.userAgent', _CONFIG.browser.userAgent);
+            caps.set("phantomjs.page.customHeaders." + "Accept-Language", _CONFIG.browser.language);
             // caps.set("phantomjs.page.customHeaders."+ "Accept", 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
-            // caps.set("phantomjs.page.customHeaders."+ "Accept-Language", 'pt-BR');
             // caps.set("phantomjs.page.customHeaders."+ "Upgrade-Insecure-Requests", '1');
             // caps.set("phantomjs.page.customHeaders."+ "Accept-Encoding", 'gzip, deflate');
-            // caps.set("phantomjs.page.customHeaders."+ "Accept-Language", 'en-US,en;q=0.8,pt-BR;q=0.6,pt;q=0.4');
-            builder.withCapabilities(caps);
+            // caps.set("phantomjs.binary.path", '/digitro/ambiente/workspaces/workspaceDefault/crawler/crawler-collector/src/3rd/phantomjs-2.1.1');
 
+            return new Builder().withCapabilities(caps).build();
+        }
+
+        __getChromeDriver() {
+            let caps = Capabilities.chrome();
+            if (!_CONFIG.browser.ignoreArgs) {
+                caps.set("chromeOptions", {
+                    args: [
+                        "--start-maximized",
+                        "--hide-scrollbars",
+                        "--headless",
+                        "--disable-gpu",
+                        "--disable-notifications",
+                        "--disable-infobars",
+                        "user-agent=" + _CONFIG.browser.userAgent,
+                        "--lang=" + _CONFIG.browser.language
+                    ]
+                });
+            }
+            return new Builder().withCapabilities(caps).build();
+        }
+
+        __configLoggerHttp(level) {
+            logging.installConsoleHandler();
+            logging.getLogger('webdriver.http').setLevel(level);
+        }
+
+        __webdriverBuilder(browser, proxyServer, proxyAuth, cookiePath) {
+
+            this.__configLoggerHttp(logging.Level[_CONFIG.logLevel]);
+
+            browser = browser || _CONFIG.browser.name || 'phantomjs';
+
+            LOGGER.info('Browser escolhido: ' + browser);
+
+            if (browser === 'phantom') {
+                return this.__getPhantomDriver(proxyServer, proxyAuth, cookiePath);
+            } else if (browser === 'chrome') {
+                return this.__getChromeDriver();
+            }
+            LOGGER.error('Navegador \''+ browser + '\' não permitido');
         }
 
         getUntil() {
@@ -77,7 +92,7 @@
         }
 
         getConfig() {
-            return config;
+            return _CONFIG;
         }
 
         getPromise() {

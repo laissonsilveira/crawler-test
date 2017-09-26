@@ -10,10 +10,10 @@ const target = {
 
         crawlerTest.start();
 
-        crawlerTest.takeScreenshot();
+        // crawlerTest.takeScreenshot();
 
         crawlerTest.getText('//*[@id="formConsulta"]/div/table[1]/tbody/tr/td[1]/h2').then(version => {
-            result.version = version;
+            result.data = version;
         });
 
         crawlerTest.flow(() => {
