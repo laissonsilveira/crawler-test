@@ -1,6 +1,6 @@
 'use strict';
 
-const {Core} = require('./core');
+const Core = require('./core');
 const TIMEOUT = 30000;
 const LOGGER = require('winston');
 const Screenshot = require('../util/screenshot');
@@ -12,9 +12,10 @@ exports.CrawlerTest = class {
         this.params = params;
         const core = new Core(params);
         this.driver = core.getDriver();
-        this.webdriver = core.getWebdriver();
+        this.until = core.getUntil();
         this.config = core.getConfig();
-        this.By = this.webdriver.By;
+        this.By = core.getBy();
+        this.promise = core.getPromise();
     }
 
     getElement(xpath) {
@@ -38,15 +39,11 @@ exports.CrawlerTest = class {
     }
 
     waitFor(xpath) {
-        return this.driver.wait(this.until().elementLocated(this.By.xpath(xpath)), TIMEOUT);
-    }
-
-    until() {
-        return this.webdriver.until;
+        return this.driver.wait(this.until.elementLocated(this.By.xpath(xpath)), TIMEOUT);
     }
 
     flow(callback) {
-        this.webdriver.promise.controlFlow().execute(callback);
+        this.promise.controlFlow().execute(callback);
     }
 
     quit() {

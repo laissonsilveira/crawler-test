@@ -5,3 +5,4 @@ screenshots/
 .idea/
 /.directory
 node_modules/
+cache/
