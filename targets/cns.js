@@ -1,8 +1,7 @@
 'use strict';
 
 const target = {
-    url: "https://esaj.tjsp.jus.br/cpopg/open.do",
-    // url: "http://esaj.tjsp.jus.br/cpopg/open.do",
+    url: "https://cadastro.saude.gov.br/cadsusweb/login.jsp",
     execute: (crawlerTest, sendResult) => {
         let result = {
             url: target.url
@@ -12,7 +11,7 @@ const target = {
 
         // crawlerTest.takeScreenshot();
 
-        crawlerTest.getText('//*[@id="formConsulta"]/div/table[1]/tbody/tr/td[1]/h2').then(version => {
+        crawlerTest.getText('//*[@id="dialog-message_sistema_fora"]/div/p[1]').then(version => {
             result.data = version;
         });
 

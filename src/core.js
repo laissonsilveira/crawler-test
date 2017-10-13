@@ -23,6 +23,7 @@
                 // '--disk-cache-path=cache',
                 '--remote-debugger-port=8000',
                 '--remote-debugger-autorun=yes'
+                // '--load-plugins=true'
             ];
 
             // proxyServer && args.push('--proxy=' + proxyServer);
@@ -46,11 +47,14 @@
                     args: [
                         "--start-maximized",
                         "--hide-scrollbars",
-                        "--headless",
-                        "--disable-gpu",
+                        // "--headless",
+                        // "--disable-gpu",
+                        // '--user-data-dir=/digitro/ambiente/workspaces/workspaceDefault/crawler-test/userdata',
+                        // "--ignore-certificate-errors",
+                        // "--allow-running-insecure-content",
                         "--disable-notifications",
                         "--disable-infobars",
-                        "user-agent=" + _CONFIG.browser.userAgent,
+                        "--user-agent=" + _CONFIG.browser.userAgent,
                         "--lang=" + _CONFIG.browser.language
                     ]
                 });
