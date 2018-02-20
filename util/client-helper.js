@@ -84,7 +84,7 @@
                     jsonToPopulate[attribName] = processResultFunc ? processResultFunc(result) : result || null;
                 })
                 .catch(() => {
-                    LOGGER.warn('Element with the xPath \'' + elementXPath + '\' as \'' + attribName + '\' has not been found!');
+                    LOGGER.warn(`Element with the xPath '${elementXPath}' as '${attribName}' has not been found!`);
                     jsonToPopulate[attribName] = processResultFunc ? processResultFunc(null) : null;
                 });
         }
