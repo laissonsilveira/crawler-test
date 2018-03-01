@@ -15,6 +15,10 @@ const target = {
             result.version = version;
         });
 
+        // crawlerTest.getText('//small[contains(text(),"Simplify")]').then(version => {
+        //     result.version = version;
+        // });
+
         crawlerTest.flow(() => {
             sendResult(result);
         });

@@ -1,42 +1,10 @@
 <html>
 <head>
     <title>Receita Federal do Brasil</title>
-    <meta name="GENERATOR" content="Microsoft FrontPage 6.0">
-    <LINK href="/css/Common.css" rel="stylesheet" type="text/css">
-    <script language="JavaScript" src="/js/Principal.js" type="text/javascript"></script>
-    <LINK REL="SHORTCUT ICON" href="/favicon.ico">
-    <script language="JavaScript">
-        function proxima(link) {
-            location.replace(link);
-            return false;
-        }
-
-        function carrega(vobjeto) {
-            for (var va = 0; va < document.forms[0].elements.length; va++) {
-                if (document.forms[0].elements[va].name == vobjeto) {
-                    document.forms[0].elements[va].focus();
-                }
-            }
-            return false;
-        }
-
-        function volta(vvolta) {
-            history.go(vvolta * -1);
-            return false;
-        }
-
-        function SaltaCampo(campo, prox, tammax, teclapres) {
-            var tecla = teclapres.keyCode;
-            vr = campo.value;
-            tam = vr.length;
-            if (tecla != 0 && tecla != 10 && tecla != 24)
-                if (tam == tammax)
-                    prox.focus();
-        }
-    </script>
-    <title>Tela de respostas</title>
+    <!--<meta charset="UTF-8">-->
+    <!--<meta charset="ISO-8859-1">-->
 </head>
-<body background="area_texto_back.jpg" marginwidth="0" marginheight="0">
+<body marginwidth="0" marginheight="0">
 <table border="0" width="100%">
     <tbody>
     <tr>
@@ -106,7 +74,7 @@
     </tr>
     <tr>
         <td valign="middle" align="left"><b><font face="Arial" size="2">
-            O número do CNPJ não possui 14 dígitos. Verifique se o mesmo foi digitado corretamente.
+            O número do CNPJ não possui 14 dígitos. Verifique se o mesmo foi digitado corretamente
         </font></b></td>
     </tr>
     <tr>
