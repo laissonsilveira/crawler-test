@@ -10,7 +10,13 @@
 
 ### Start project
 
-    npm start 
+    npm start
+    
+   ou 
+    
+    node index.js <nome do site_arquivo> <navegador>
+   
+   Navegadores: chrome/phantomjs
 
 ### Selenium api documents
 http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/

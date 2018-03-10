@@ -5,6 +5,10 @@
   "main": "index.js",
   "author": "Laisson R. Silveira",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laissonsilveira/crawler-test.git"
+  },
   "dependencies": {
     "moment": "^2.20.1",
     "phantomjs": "^2.1.7",
@@ -15,8 +19,7 @@
     "winston": "^2.3.1"
   },
   "scripts": {
-    "start": "node index.js",
-    "start-debug": "node --inspect-brk index.js",
+    "start": "node index.js simplify chrome",
     "test": "mocha"
   }
 }
