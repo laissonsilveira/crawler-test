@@ -1,21 +1,14 @@
 'use strict';
 
-const Core = require('./core');
-const TIMEOUT = 30000;
-const LOGGER = require('winston');
-const Screenshot = require('../util/screenshot');
-const ClientHelper = require('../util/client-helper');
+const Core = require('./core'),
+    Screenshot = require('../util/screenshot'),
+    TIMEOUT = 30000;
 
-exports.CrawlerTest = class {
+class CrawlerTest {
 
-    constructor(params) {
-        this.params = params;
-        const core = new Core(params);
-        this.driver = core.getDriver();
-        this.until = core.getUntil();
-        this.config = core.getConfig();
-        this.By = core.getBy();
-        this.promise = core.getPromise();
+    constructor(URL) {
+        this._URL = URL;
+        this._core = new Core();
     }
 
     getElement(xpath) {
@@ -31,7 +24,7 @@ exports.CrawlerTest = class {
     }
 
     goTo(target) {
-        this.driver.get(target);
+        this._core.driver.get(target);
     }
 
     getText(xpath) {
@@ -39,41 +32,27 @@ exports.CrawlerTest = class {
     }
 
     waitFor(xpath) {
-        return this.driver.wait(this.until.elementLocated(this.By.xpath(xpath)), TIMEOUT);
+        return this._core.driver.wait(this._core.until.elementLocated(this._core.By.xpath(xpath)), TIMEOUT);
     }
 
     flow(callback) {
-        this.promise.controlFlow().execute(callback);
+        this._core.promise.controlFlow().execute(callback);
     }
 
     quit() {
-        this.driver.quit();
+        this._core.driver.quit();
     }
 
     takeScreenshot() {
-        new Screenshot(this.driver).take();
-    }
-
-    download(link) {
-
-    }
-
-    driver() {
-        return this.driver;
-    }
-
-    By() {
-        return this.By;
+        new Screenshot(this._core.driver).take();
     }
 
     start() {
-        const target = this.params.target;
-        if (!target) {
-            LOGGER.warn("Target is required!");
-            return;
-        }
-        LOGGER.info("Initializing...");
-        LOGGER.info("Target: ", target);
+        const target = this._URL;
+        if (!target) return LOGGER.warn("Target is required!");
+        LOGGER.info(`Initializing... TARGET: ${target}`);
         this.goTo(target);
     }
-};
+}
+
+module.exports = CrawlerTest;

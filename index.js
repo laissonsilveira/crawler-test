@@ -1,16 +1,19 @@
 'use strict';
 
 if (!process.argv[2]) throw Error('Informe o nome do site!');
-const {CrawlerTest} = require('./src/crawlerTest');
-const {target} = require('./targets/' + process.argv[2]);
-const LOGGER = require('winston');
 
-const crawlerTest = new CrawlerTest({
-    target: target.url
-});
+global.CONFIG = require('./config-app')
+global.LOGGER = require('./util/logger').winston;
 
-target.execute(crawlerTest, result => {
-    LOGGER.info('RESULT:', JSON.stringify(result));
+const CrawlerTest = require('./src/crawlerTest'),
+    Site = require('./targets/' + process.argv[2]),
+    crawlerTest = new CrawlerTest(Site.URL);
+
+crawlerTest.start();
+
+new Site(crawlerTest).execute().then(result => {
+    LOGGER.info('RESULT:\n', JSON.stringify(result, null, 4));
+    crawlerTest.quit();
 });
 
 

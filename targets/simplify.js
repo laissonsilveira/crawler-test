@@ -1,31 +1,35 @@
 'use strict';
 
-const target = {
-    url: "http://admin.simplifyzone.com.br/app/#!/login",
-    execute: (crawlerTest, sendResult) => {
-        let result = {
-            url: target.url
-        };
+class Simplify {
 
-        crawlerTest.start();
+    constructor(crawlerTest) {
+        this._crawlerTest = crawlerTest;
+    }
 
-        crawlerTest.takeScreenshot();
+    execute() {
+        return new Promise(resolve => {
 
-        crawlerTest.getText('//div[contains(@class,"text-simplify")]/small').then(version => {
-            result.version = version;
-        });
+            // this._crawlerTest.takeScreenshot();
 
-        // crawlerTest.getText('//small[contains(text(),"Simplify")]').then(version => {
-        //     result.version = version;
-        // });
+            let result = {site:'Simplify'};
+            this._crawlerTest.getText('//div[contains(@class,"text-simplify")]/small').then(version => {
+                result.version = version.replace(/[^\d.]+/g, '');
+            });
 
-        crawlerTest.flow(() => {
-            sendResult(result);
+            this._crawlerTest.flow(() => {
+                resolve(result);
+            });
+
         });
     }
-};
 
-exports.target = target;
+    static get URL() {
+        return 'http://admin.simplifyzone.com.br/app/#!/login';
+    }
+
+}
+
+module.exports = Simplify;
 
 
 

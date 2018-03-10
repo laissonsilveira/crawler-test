@@ -2,15 +2,11 @@
     'use strict';
 
     const {Builder, Capabilities, logging, By, until, promise} = require('selenium-webdriver');
-    const _CONFIG = require('../config-app.json');
-    const LOGGER = require('winston');
-    const path = require('path');
 
     class Core {
 
-        constructor(params) {
-            this.params = params;
-            this.driver = this.__webdriverBuilder(process.argv[3])
+        constructor() {
+            this._driver = this.__webdriverBuilder(process.argv[3])
         }
 
         __getPhantomDriver() {
@@ -30,9 +26,9 @@
             // proxyAuth && args.push('--proxy-auth=' + proxyAuth);
 
             caps.set("phantomjs.cli.args", args);
-            caps.set('phantomjs.page.settings.userAgent', _CONFIG.browser.userAgent);
+            caps.set('phantomjs.page.settings.userAgent', CONFIG.browser.userAgent);
             // caps.set('phantomjs.page.settings.encoding', 'ISO-8859-1');
-            caps.set("phantomjs.page.customHeaders." + "Accept-Language", _CONFIG.browser.language);
+            caps.set("phantomjs.page.customHeaders." + "Accept-Language", CONFIG.browser.language);
             // caps.set("phantomjs.page.customHeaders."+ "Accept", 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
             // caps.set("phantomjs.page.customHeaders."+ "Upgrade-Insecure-Requests", '1');
             // caps.set("phantomjs.page.customHeaders."+ "Accept-Encoding", 'gzip, deflate');
@@ -43,64 +39,66 @@
 
         __getChromeDriver() {
             let caps = Capabilities.chrome();
-            if (!_CONFIG.browser.ignoreArgs) {
-                caps.set("chromeOptions", {
-                    args: [
-                        "--start-maximized",
-                        "--hide-scrollbars",
-                        // "--headless",
-                        // "--disable-gpu",
-                        // '--user-data-dir=/digitro/ambiente/workspaces/workspaceDefault/crawler-test/userdata',
-                        // "--ignore-certificate-errors",
-                        // "--allow-running-insecure-content",
-                        "--disable-notifications",
-                        "--disable-infobars",
-                        "--user-agent=" + _CONFIG.browser.userAgent,
-                        "--lang=" + _CONFIG.browser.language
-                    ]
-                });
+            if (!CONFIG.browser.ignoreArgs) {
+                let args = [
+                    // "--start-maximized",
+                    // "--hide-scrollbars",
+                    // '--user-data-dir=/digitro/ambiente/workspaces/workspaceDefault/crawler-test/userdata',
+                    // "--ignore-certificate-errors",
+                    // "--allow-running-insecure-content",
+                    "--disable-notifications",
+                    "--disable-infobars",
+                    "--user-agent=" + CONFIG.browser.userAgent,
+                    "--lang=" + CONFIG.browser.language
+                ];
+
+                if (CONFIG.browser.isHeadless) {
+                    args = args.concat([
+                        "--headless",
+                        "--disable-gpu",
+                        "--no-sandbox"
+                    ]);
+                }
+
+                caps.set("chromeOptions", {args});
             }
             return new Builder().withCapabilities(caps).build();
         }
 
-        __configLoggerHttp(level) {
+        _CONFIGLoggerHttp(level) {
             logging.installConsoleHandler();
             logging.getLogger('webdriver.http').setLevel(level);
         }
 
         __webdriverBuilder(browser, proxyServer, proxyAuth, cookiePath) {
 
-            this.__configLoggerHttp(logging.Level[_CONFIG.logLevel]);
+            this._CONFIGLoggerHttp(logging.Level[CONFIG.logLevel]);
 
-            browser = browser || _CONFIG.browser.name || 'phantomjs';
+            browser = browser || CONFIG.browser.name || 'phantomjs';
 
             LOGGER.info('Browser escolhido: ' + browser);
 
-            if (browser === 'phantom') {
+            if (browser === 'phantomjs') {
                 return this.__getPhantomDriver(proxyServer, proxyAuth, cookiePath);
             } else if (browser === 'chrome') {
                 return this.__getChromeDriver();
             }
-            LOGGER.error('Navegador \''+ browser + '\' não permitido');
+            LOGGER.error(`Navegador '${browser}' não permitido`);
         }
 
-        getUntil() {
+        get until() {
             return until;
         }
 
-        getBy() {
+        get By() {
             return By;
         }
 
-        getDriver() {
-            return this.driver;
+        get driver() {
+            return this._driver;
         }
 
-        getConfig() {
-            return _CONFIG;
-        }
-
-        getPromise() {
+        get promise() {
             return promise;
         }
     }
