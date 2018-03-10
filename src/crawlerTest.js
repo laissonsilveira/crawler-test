@@ -58,6 +58,14 @@ exports.CrawlerTest = class {
 
     }
 
+    driver() {
+        return this.driver;
+    }
+
+    By() {
+        return this.By;
+    }
+
     start() {
         const target = this.params.target;
         if (!target) {

@@ -6,8 +6,7 @@
   "author": "Laisson R. Silveira",
   "license": "MIT",
   "dependencies": {
-    "chromedriver": "^2.31.0",
-    "moment": "^2.18.1",
+    "moment": "^2.20.1",
     "phantomjs": "^2.1.7",
     "querystring": "^0.2.0",
     "request": "^2.82.0",

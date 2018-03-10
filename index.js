@@ -9,7 +9,7 @@ const crawlerTest = new CrawlerTest({
     target: target.url
 });
 
-target.execute(crawlerTest, (result) => {
+target.execute(crawlerTest, result => {
     LOGGER.info('RESULT:', JSON.stringify(result));
 });
 
