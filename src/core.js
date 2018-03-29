@@ -32,7 +32,7 @@
             // caps.set("phantomjs.page.customHeaders."+ "Accept", 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
             // caps.set("phantomjs.page.customHeaders."+ "Upgrade-Insecure-Requests", '1');
             // caps.set("phantomjs.page.customHeaders."+ "Accept-Encoding", 'gzip, deflate');
-            // caps.set("phantomjs.binary.path", '/digitro/ambiente/workspaces/workspaceDefault/crawler/crawler-collector/src/3rd/phantomjs-2.1.1');
+            // caps.set("phantomjs.binary.path", '/phantomjs-2.1.1');
 
             return new Builder().withCapabilities(caps).build();
         }
@@ -43,12 +43,12 @@
                 let args = [
                     // "--start-maximized",
                     // "--hide-scrollbars",
-                    // '--user-data-dir=/digitro/ambiente/workspaces/workspaceDefault/crawler-test/userdata',
-                    // "--ignore-certificate-errors",
-                    // "--allow-running-insecure-content",
+                    '--user-data-dir=crawler-test/userdata',
+                    "--ignore-certificate-errors",
+                    "--allow-running-insecure-content",
                     "--disable-notifications",
                     "--disable-infobars",
-                    "--user-agent=" + CONFIG.browser.userAgent,
+                    "user-agent=" + CONFIG.browser.userAgent,
                     "--lang=" + CONFIG.browser.language
                 ];
 

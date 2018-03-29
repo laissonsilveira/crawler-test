@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
+<head>
+
+	<title>MEI
+	</title>
+	<meta http-equiv="cache-control" content="no-cache" />
+	<link class="component" href="/inscricaomei/a4j/s/3_3_3.Finalorg/richfaces/renderkit/html/css/basic_classes.xcss/DATB/eAELXT5DOhSIAQ!sA18_.jsf" rel="stylesheet" type="text/css" /><link class="component" href="/inscricaomei/a4j/s/3_3_3.Finalorg/richfaces/renderkit/html/css/extended_classes.xcss/DATB/eAELXT5DOhSIAQ!sA18_.jsf" media="rich-extended-skinning" rel="stylesheet" type="text/css" /><script type="text/javascript">window.RICH_FACES_EXTENDED_SKINNING_ON=true;</script><script src="/inscricaomei/a4j/g/3_3_3.Finalorg/richfaces/renderkit/html/scripts/skinning.js.jsf" type="text/javascript"></script><link class="user" href="/inscricaomei/private/resources/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" /><link class="user" href="/inscricaomei/private/resources/styles/mei.css" rel="stylesheet" type="text/css" /><script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/div.js"></script>
+	<script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/formatacao.js"></script>
+	<script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/elemento.js"></script>
+    <script type="text/javascript" language="javascript" src="/inscricaomei/private/resources/scripts/mei_formatacao.js"></script>
+    <script type="text/javascript" language="javascript" src="/inscricaomei/private/resources/scripts/jquery-1.3.2.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/jquery.maskMoney.js"></script>
+    <script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/jquery.maskedinput-1.2.2.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/modalIframe.js"></script>
+    <script type="text/javascript">
+        jQuery.noConflict();
+    </script>
+
+    <script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/solicitacao.js"></script>
+    
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+    
+</head>
+
+
+<body onkeydown="return desabilitaVoltarBackspace(event);" onload="gravaBrowserInfo();"><script type="text/javascript" src="/inscricaomei/weblets/weblets/component/jsf/js/resource/keyboardHotKeysManager.js"></script><script type="text/javascript" src="/inscricaomei/weblets/weblets/component/jsf/js/resource/logoutHandler.js"></script><noscript>Your browser does not support JavaScript!</noscript><link rel="stylesheet" href="/inscricaomei/private/resources/styles/mei.css" type="text/css" />
+
+    <noscript>
+		<meta http-equiv="refresh" content="0;url=/inscricaomei/public/pages/error/js_disabled.jsp" />
+	</noscript>
+	<script>
+		function tabulaCepComercial() {
+			var tipoLogradouro = document.getElementById("form:meiMB_solicitacao_endereco_codTipoLogradouro");
+			if (isElementoVisivel(tipoLogradouro)) {
+				tipoLogradouro.focus();
+			} else {
+				var numero = document.getElementById("form:meiMB_solicitacao_endereco_numero");
+				if (isElementoVisivel(numero)) {
+					numero.focus();
+				}
+			}
+		}
+		
+		function tabulaCepResidencial() {
+			var tipoLogradouro = document.getElementById("form:meiMB_solicitacao_empresario_endereco_codTipoLogradouro");
+			if (isElementoVisivel(tipoLogradouro)) {
+				tipoLogradouro.focus();
+			} else {
+				var numero = document.getElementById("form:meiMB_solicitacao_empresario_endereco_numero");
+				if (isElementoVisivel(numero)) {
+					numero.focus();
+				}
+			}
+		}
+
+		function gravaBrowserInfo() {
+			var navName = navigator.appName;
+			var navVersion = navigator.appVersion;
+			var navAgent = navigator.userAgent;
+			var compatibleNav = false;
+
+			var opera = (navAgent.indexOf('Opera') != -1);
+
+			if (opera) {
+				navVersion = parseFloat(navAgent.slice(navAgent.indexOf('Opera') + 6))
+				navVersion = "Opera " + navVersion;
+				compatibleNav = (navVersion >= 9.10);
+			}
+
+			var netscape = mozilla = Konqueror = iexplore = !opera;
+			if (!opera) {
+				netscape = (navAgent.indexOf('Netscape') != -1);
+				if (netscape) {
+					navVersion = parseFloat(navAgent.slice(navAgent.lastIndexOf('/') + 1));
+					compatibleNav = (navVersion >= 7.0);
+				}
+				mozilla = (!netscape && (navAgent.indexOf('rv:') != -1));
+				if (mozilla) {
+					navVersion = navAgent.slice(navAgent.indexOf('Firefox/'));
+					compatibleNav = (navVersion >= 1.5);
+				}
+				Konqueror = (navAgent.indexOf('Konqueror') != -1);
+				if (Konqueror) {
+					navVersion = parseFloat(navAgent.slice(navAgent.indexOf('Konqueror') + 10))
+					compatibleNav = (navVersion >= 3.1);
+				}
+				iexplore = (navAgent.indexOf('MSIE') != -1);
+				if (iexplore) {
+					navVersion = navAgent.slice(navAgent.indexOf('MSIE'), navAgent.indexOf('MSIE') + 10);
+					compatibleNav = (navVersion >= 5.5);
+				}
+			}
+			var browser = document.getElementById("form:browser");
+			if (browser != null) {
+				browser.value = navVersion;
+			}
+			if (navAgent.indexOf('MSIE 7.0') != -1) {
+			   	//alert("ATENÇÃO: os navegadores Internet Explorer na versão 7 têm apresentado problemas na hora da transmissão das declarações. Se você possui esta versão sugerimos, que atualize para uma versão mais recente.");*/
+			}
+		}
+	</script>
+ 
+	<table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" summary="Seja bem vindo">
+		<tr>
+			<td>
+                <div id="mensagensValidacao"></div>
+			</td>
+		</tr>
+		<tr>
+			<td>   	
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet" />
+<form id="form" name="form" method="post" action="/inscricaomei/private/pages/certificado_acesso.jsf" enctype="application/x-www-form-urlencoded" onkeypress="return processarOnkeyPress(event);">
+<input type="hidden" name="form" value="form" />
+<input type="hidden" name="uniqueToken" value="" /><script type="text/javascript" src="/inscricaomei/weblets/weblets/component/jsf/js/resource/keyboardHotKeysManager.js"></script><script type="text/javascript" src="/inscricaomei/weblets/weblets/component/jsf/js/resource/logoutHandler.js"></script><noscript>Your browser does not support JavaScript!</noscript>
+			<div id="content" class="container-fluid">
+       			<div style="text-align:left;">
+		 			<h3>Certificado - Acesso</h3><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="//captcha2.servicoscorporativos.serpro.gov.br/js/captcha.serpro.gov.br.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+		<script>
+		
+		function processarOnkeyPress(event) {
+			if (event.keyCode == 13 && event.target.nodeName == 'INPUT' && event.target.getAttribute('type') != 'submit') { 
+				button = obterBotaoConfirmarAtivo();
+				if (button) {
+					button.click();
+				}
+				return false; 
+			}
+			
+		}
+		
+		function obterBotaoConfirmarAtivo() {
+			button = document.getElementById('form:btnContinuar');
+			return button;
+			
+		}
+
+		</script>
+
+	<table style="border: 0; width: 470px;">
+		<tbody>
+			<tr>
+					<td class="coluna"><label for="meiMB_cpf" title="Digite o n&uacute;mero do CPF do respons&aacute;vel, sem pontos, barra e tra&ccedil;o." class="outputLabel">
+CPF</label><br /><input id="meiMB_cpf" name="meiMB_cpf" type="text" value="041.562.289-16" maxlength="14" onkeypress="return validaCampoTabula(this, event, mascaraCpf);" onkeyup="tabulaProximo(this);" class="inputText campoCPF default-input-width linha" tabindex="2" onblur="AplicarMascaraCPF(this); tabulaProximoByFocus(this, event);" />
+					</td>
+					<td style="text-align:left; width:90%;"><label for="meiMB_dataNascimento" title="Digite a data de seu nascimento, sem barra." class="outputLabel">
+Data de Nascimento</label><br /><input id="meiMB_dataNascimento" name="meiMB_dataNascimento" type="text" value="14/08/1984" maxlength="10" onkeypress="return validaCampoTabula(this, event, mascaraData);" onkeyup="tabulaProximo(this);" class="inputText default-input-width linha" tabindex="1" onblur="AplicarMascaraData(this); tabulaProximoByFocus(this, event);" />
+					</td>
+				<tr>
+				</tr>
+
+			</tr>
+				<tr>
+					<td>
+						<div data-ui-captcha-serpro="true" data-config="css2; input" data-clienteid="d394cd471c474b30bf6e9855bf7a5fc5"></div>
+					</td>
+				</tr>
+			<tr>
+				<td colspan="100%" style="text-align:left;"><br /><script type="text/javascript">
+
+	function oamSetHiddenInput(formname, name, value)
+	{
+		var form = document.forms[formname];
+		if(typeof form.elements[name]=='undefined')
+		{
+			var newInput = document.createElement('input');
+			newInput.setAttribute('type','hidden');
+			newInput.setAttribute('id',name);
+			newInput.setAttribute('name',name);
+			newInput.setAttribute('value',value);
+			form.appendChild(newInput);
+		}
+		else
+		{
+			form.elements[name].value=value;
+		}
+		
+	}
+	
+	
+	function oamClearHiddenInput(formname, name, value)
+	{
+		var form = document.forms[formname];
+		if(typeof form.elements[name]!='undefined')
+		{
+			form.elements[name].value=null;
+		}
+		
+	}
+	
+	function oamSubmitForm(formName, linkId, target, params)
+	{
+		
+		var clearFn = 'clearFormHiddenParams_'+formName.replace(/-/g, '\$:').replace(/:/g,'_');
+		if(typeof eval('window.'+clearFn)!='undefined')
+		{
+			eval('window.'+clearFn+'(formName)');
+		}
+		
+		var oldTarget = '';
+		if((typeof target!='undefined') && target != null)
+		{
+			oldTarget=document.forms[formName].target;
+			document.forms[formName].target=target;
+		}
+		if((typeof params!='undefined') && params != null)
+		{
+			for(var i=0; i<params.length; i++)
+			{
+				oamSetHiddenInput(formName,params[i][0], params[i][1]);
+			}
+			
+		}
+		
+		oamSetHiddenInput(formName,formName +':'+'_idcl',linkId);
+		
+		if(document.forms[formName].onsubmit)
+		{
+			var result=document.forms[formName].onsubmit();
+			if((typeof result=='undefined')||result)
+			{
+				document.forms[formName].submit();
+			}
+			
+		}
+		else 
+		{
+			document.forms[formName].submit();
+		}
+		if(oldTarget==null) oldTarget='';
+		document.forms[formName].target=oldTarget;
+		if((typeof params!='undefined') && params != null)
+		{
+			for(var i=0; i<params.length; i++)
+			{
+				oamClearHiddenInput(formName,params[i][0], params[i][1]);
+			}
+			
+		}
+		
+		oamClearHiddenInput(formName,formName +':'+'_idcl',linkId);return false;
+	}
+	
+</script><input id="form:j_id28" name="form:j_id28" type="submit" value="Cancelar" onclick="if(typeof window.clearFormHiddenParams_form!='undefined'){clearFormHiddenParams_form('form');}" class="btn btn-default coluna" tabindex="4" /><input id="form:btnContinuar" name="form:btnContinuar" type="submit" value="Continuar" onclick="if(typeof window.clearFormHiddenParams_form!='undefined'){clearFormHiddenParams_form('form');}" class="btn btn-primary" tabindex="5" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- IFRAME RESIZE -->
+	<script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/iframeResizer.contentWindow.min.js"></script>
+	<!-- IFRAME RESIZE -->
+</body>
+</html>
+				</div>
+				
+			</div>
+				<!-- Não colocar no final do HTML senão não funciona -->
+				<script>
+					//alterado pois para emissao do certificado o campo apresentado e CPF
+					if (document.getElementById('meiMB_cnpj')){
+						setFocus('meiMB_cnpj');
+					}else{
+						setFocus('meiMB_cpf');
+					}
+				</script>
+			
+			<!-- IFRAME RESIZE -->
+			<script language="javascript" type="text/javascript" src="/inscricaomei/private/resources/scripts/iframeResizer.contentWindow.min.js"></script>
+			<!-- IFRAME RESIZE --><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="j_id3" />
+</form></td>
+		</tr>
+	</table>
+<!-- MYFACES JAVASCRIPT -->
+
+</body>
+</html>

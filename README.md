@@ -10,11 +10,7 @@
 
 ### Start project
 
-    npm start
-    
-   ou 
-    
-    node index.js <nome do site_arquivo> <navegador>
+    npm start <nome do site_arquivo> <navegador>
    
    Navegadores: chrome/phantomjs
 

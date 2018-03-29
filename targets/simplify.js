@@ -16,7 +16,7 @@ class Simplify {
                 result.version = version.replace(/[^\d.]+/g, '');
             });
 
-            this._crawlerTest.flow(() => {
+            this._crawlerTest.executeInflow(() => {
                 resolve(result);
             });
 
