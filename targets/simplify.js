@@ -3,20 +3,17 @@
 class Simplify {
 
     constructor(crawlerTest) {
-        this._crawlerTest = crawlerTest;
+        this.crawler = crawlerTest;
     }
 
     execute() {
         return new Promise(resolve => {
 
-            // this._crawlerTest.takeScreenshot();
+            // this.crawler.takeScreenshot();
 
-            let result = {site:'Simplify'};
-            this._crawlerTest.getText('//div[contains(@class,"text-simplify")]/small').then(version => {
+            let result = { site: 'Simplify' };
+            this.crawler.getText('//div[contains(@class,"text-simplify")]/small').then(version => {
                 result.version = version.replace(/[^\d.]+/g, '');
-            });
-
-            this._crawlerTest.executeInflow(() => {
                 resolve(result);
             });
 
@@ -24,13 +21,10 @@ class Simplify {
     }
 
     static get URL() {
-        return 'http://admin.simplifyzone.com.br/app/#!/login';
+        // return 'http://admin.simplifyzone.com.br/app/#!/login';
+        return 'http://localhost:3000/app/#!/login';
     }
 
 }
 
 module.exports = Simplify;
-
-
-
-

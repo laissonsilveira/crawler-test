@@ -2,8 +2,8 @@
 
 if (!process.argv[2]) throw Error('Informe o nome do site!');
 
-global.CONFIG = require('./config-app')
-global.LOGGER = require('./util/logger').winston;
+global.CONFIG = require('./config-app');
+global.LOGGER = require('./util/logger');
 
 const CrawlerTest = require('./src/crawlerTest'),
     Site = require('./targets/' + process.argv[2]),
@@ -11,10 +11,12 @@ const CrawlerTest = require('./src/crawlerTest'),
 
 crawlerTest.start();
 
-new Site(crawlerTest).execute().then(result => {
-    LOGGER.info('RESULT:\n', JSON.stringify(result, null, 4));
-    crawlerTest.quit();
-});
+new Site(crawlerTest).execute()
+    .then(result => {
+        LOGGER.info('\nRESULT:', JSON.stringify(result, null, 4));
+        crawlerTest.quit();
+    })
+    .catch(err => LOGGER.error(err));
 
 
 

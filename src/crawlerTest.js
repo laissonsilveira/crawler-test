@@ -2,17 +2,18 @@
 
 const Core = require('./core'),
     Screenshot = require('../util/screenshot'),
+    { until, By } = require('selenium-webdriver'),
     TIMEOUT = 30000;
 
 class CrawlerTest {
 
     constructor(URL) {
         this._URL = URL;
-        this._core = new Core();
+        this._driver = new Core().driver;
     }
 
     sleep(timeout = 5000) {
-        this._core.driver.sleep(timeout)
+        this._driver.sleep(timeout);
     }
 
     getElement(xpath) {
@@ -28,7 +29,7 @@ class CrawlerTest {
     }
 
     goTo(target) {
-        this._core.driver.get(target);
+        this._driver.get(target);
     }
 
     getText(xpath) {
@@ -36,23 +37,23 @@ class CrawlerTest {
     }
 
     waitFor(xpath) {
-        return this._core.driver.wait(this._core.until.elementLocated(this._core.By.xpath(xpath)), TIMEOUT);
+        return this._driver.wait(until.elementLocated(By.xpath(xpath)), TIMEOUT);
     }
 
     executeInflow(callback) {
-        this._core.promise.controlFlow().execute(callback);
+        return this._driver.controlFlow().execute(callback);
     }
 
     quit() {
-        this._core.driver.quit();
+        this._driver.quit();
     }
 
     get driver() {
-        return this._core.driver;
+        return this._driver;
     }
 
     takeScreenshot() {
-        new Screenshot(this._core.driver).take();
+        new Screenshot(this._driver).take();
     }
 
     start() {

@@ -6,23 +6,26 @@ const { join } = require('path');
 
 class Mei {
 
+    /**
+     *
+     * @param {CrawlerTest} crawlerTest
+     */
     constructor(crawlerTest) {
-        this._crawlerTest = crawlerTest;
+        this._crawler = crawlerTest;
     }
 
     execute() {
         return new Promise(resolve => {
 
-            // this._crawlerTest.takeScreenshot();
-            // this._crawlerTest.type('04156228916', '//input[@id="meiMB_cpf"]');
-            // this._crawlerTest.type('14/08/1984', '//input[@id="meiMB_dataNascimento"]');
+            this._crawler.type('04156228916', '//input[@id="meiMB_cpf"]');
+            this._crawler.type('14/08/1984', '//input[@id="meiMB_dataNascimento"]');
 
-            this._crawlerTest.sleep(20000); //para dar tempo de quebrar o captcha
+            this._crawler.sleep(15000); //para dar tempo de quebrar o captcha
+
+            this._crawler.click('//input[@id="form:btnContinuar"]');
 
             let result = {};
-            this.downloadPDF(result);
-
-            this._crawlerTest.executeInflow(() => {
+            this.downloadPDF(result).then(() => {
                 result.site = 'MEI-Download PDF';
                 resolve(result);
             });
@@ -31,15 +34,15 @@ class Mei {
     }
 
     downloadPDF(result) {
-        this._crawlerTest.executeInflow(() => {
+        return this._crawler.executeInflow(() => {
             let cookie = [], viewStateValue;
-            this._crawlerTest.driver.manage().getCookie('JSESSIONID')
+            this._crawler.driver.manage().getCookie('JSESSIONID')
                 .then(cookieSessionID => cookie.push('JSESSIONID=' + cookieSessionID.value));
 
-            this._crawlerTest.getElement('//*[@id="javax.faces.ViewState"]').getAttribute('value')
+            this._crawler.getElement('//*[@id="javax.faces.ViewState"]').getAttribute('value')
                 .then(viewStateID => viewStateValue = viewStateID);
 
-            this._crawlerTest.executeInflow(() => {
+            this._crawler.executeInflow(() => {
                 const headers = {
                     'Cookie': '_skinNameCookie=mei;' + cookie,
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -55,14 +58,16 @@ class Mei {
                     'javax.faces.ViewState': viewStateValue
                 };
 
-                console.log('HEADER >>>>>>>', headers);
-                console.log('\n');
-                console.log('BODY >>>>>>>', body);
-                console.log('\n');
-                console.log('COOKIE >>>>>>>', cookie);
+                // console.log('\nHEADER >>>>>>>\n', headers);
+                // console.log('\nBODY >>>>>>>\n', body);
+                // console.log('\nCOOKIE >>>>>>>\n', cookie);
 
-                this._crawlerTest.driver.controlFlow().wait(this.downloadThroughPost(Mei.URL,headers, body, false, false))
-                    .then(pdfBuffer => writeFileSync(join(__dirname, '..', 'download', 'certificado.pdf'), pdfBuffer, 'binary'))
+                this._crawler.driver.controlFlow().wait(this.downloadThroughPost(Mei.URL, headers, body, false, false))
+                    .then(pdfBuffer => {
+                        result.isPdf = Buffer.from(pdfBuffer).toString().toLowerCase().indexOf('pdf') > -1;
+                        writeFileSync(join(__dirname, '..', 'download', 'certificado.pdf'), pdfBuffer, 'binary');
+                        writeFileSync(join(__dirname, '..', 'download', 'certificado.html'), pdfBuffer, 'binary');
+                    })
                     .catch(err => console.error(err));
             });
         });
@@ -93,7 +98,3 @@ class Mei {
 }
 
 module.exports = Mei;
-
-
-
-

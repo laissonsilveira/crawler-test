@@ -1,15 +1,15 @@
 (function () {
     'use strict';
 
-    const {Builder, Capabilities, logging, By, until, promise} = require('selenium-webdriver');
+    const { Builder, Capabilities, logging } = require('selenium-webdriver');
 
     class Core {
 
         constructor() {
-            this._driver = this.__webdriverBuilder(process.argv[3])
+            this._driver = Core._webdriverBuilder(process.argv[3])
         }
 
-        __getPhantomDriver() {
+        static _getPhantomDriver() {
             let caps = Capabilities.phantomjs();
             let args = [
                 '--ssl-protocol=any',
@@ -37,7 +37,7 @@
             return new Builder().withCapabilities(caps).build();
         }
 
-        __getChromeDriver() {
+        static _getChromeDriver() {
             let caps = Capabilities.chrome();
             if (!CONFIG.browser.ignoreArgs) {
                 let args = [
@@ -52,7 +52,12 @@
                     "--lang=" + CONFIG.browser.language
                 ];
 
-                if (CONFIG.browser.isHeadless) {
+                let isHeadless = CONFIG.browser.isHeadless;
+                if (process.argv[4]) {
+                    isHeadless = process.argv[4] === 'true';
+                }
+
+                if (isHeadless) {
                     args = args.concat([
                         "--headless",
                         "--disable-gpu",
@@ -60,47 +65,32 @@
                     ]);
                 }
 
-                caps.set("chromeOptions", {args});
+                caps.set("chromeOptions", { args });
             }
             return new Builder().withCapabilities(caps).build();
         }
 
-        _CONFIGLoggerHttp(level) {
+        static _webdriverBuilder(browser, proxyServer, proxyAuth, cookiePath) {
+
             logging.installConsoleHandler();
-            logging.getLogger('webdriver.http').setLevel(level);
-        }
-
-        __webdriverBuilder(browser, proxyServer, proxyAuth, cookiePath) {
-
-            this._CONFIGLoggerHttp(logging.Level[CONFIG.logLevel]);
+            logging.getLogger('webdriver.http').setLevel(logging.Level[CONFIG.logLevel]);
 
             browser = browser || CONFIG.browser.name || 'phantomjs';
 
             LOGGER.info('Browser escolhido: ' + browser);
 
             if (browser === 'phantomjs') {
-                return this.__getPhantomDriver(proxyServer, proxyAuth, cookiePath);
+                return Core._getPhantomDriver(proxyServer, proxyAuth, cookiePath);
             } else if (browser === 'chrome') {
-                return this.__getChromeDriver();
+                return Core._getChromeDriver();
             }
             LOGGER.error(`Navegador '${browser}' não permitido`);
-        }
-
-        get until() {
-            return until;
-        }
-
-        get By() {
-            return By;
         }
 
         get driver() {
             return this._driver;
         }
 
-        get promise() {
-            return promise;
-        }
     }
 
     module.exports = Core;
