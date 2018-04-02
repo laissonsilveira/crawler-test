@@ -2,6 +2,7 @@
 
 const Core = require('./core'),
     Screenshot = require('../util/screenshot'),
+    LOGGER = require('../util/logger'),
     { until, By } = require('selenium-webdriver'),
     TIMEOUT = 30000;
 

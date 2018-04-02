@@ -14,8 +14,8 @@ class Screenshot {
      */
     constructor(driver) {
         this.driver = driver;
-        this._CONFIG = CONFIG.screenshot;
-        this._PATH = CONFIG.screenshot.path;
+        this._CONFIG = __CONFIG.screenshot;
+        this._PATH = __CONFIG.screenshot.path;
         this._deleteOldScreenshots();
         this._makeScreenshotFolder();
     }

@@ -1,8 +1,9 @@
 'use strict';
 const request = require('request');
 const qs = require('querystring');
-const { writeFileSync } = require('fs');
+const { writeFileSync, existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
+const LOGGER = require('../util/logger');
 
 class Mei {
 
@@ -15,6 +16,8 @@ class Mei {
 
     execute() {
         return new Promise(resolve => {
+
+            LOGGER.info('INICIANDO coleta do MEI');
 
             this._crawler.type('04156228916', '//input[@id="meiMB_cpf"]');
             this._crawler.type('14/08/1984', '//input[@id="meiMB_dataNascimento"]');
@@ -64,18 +67,28 @@ class Mei {
                     'javax.faces.ViewState': viewStateValue
                 };
 
-                // console.log('\nHEADER >>>>>>>\n', headers);
-                // console.log('\nBODY >>>>>>>\n', body);
-                // console.log('\nCOOKIE >>>>>>>\n', cookieSessionID);
+                LOGGER.debug(`Efetuando download do PDF...
+                    HEADER >>>>>>>\n', ${headers}
+                    BODY >>>>>>>\n', ${body}
+                    COOKIE >>>>>>>\n', ${cookieSessionID}
+                `);
 
                 this._crawler.driver.controlFlow().wait(this.downloadThroughPost(
                     'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/certificado.jsf',//essa URL não joga para fora
                     headers, body, false, false))
                     .then(pdfBuffer => {
-                        result.successDownload = Buffer.from(pdfBuffer).toString().toLowerCase().indexOf('pdf') > -1;
-                        writeFileSync(join(__dirname, '..', 'download', 'certificado.pdf'), pdfBuffer, 'binary');
+                        const pdfStr = Buffer.from(pdfBuffer).toString();
+                        result.successDownload = /(Title\(Certificado da Condi)(.*?)(o de Microempreendedor Individual\))/g.test(pdfStr);
+
+                        const filePath = join(__dirname, '..', 'download');
+                        if (!existsSync(filePath)) {
+                            mkdirSync(filePath);
+                        }
+                        writeFileSync(join(filePath, 'certificado.pdf'), pdfBuffer, 'binary');
+
+                        LOGGER.info('FINALIZADO coleta do MEI');
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => LOGGER.error(err));
             });
         });
     }
