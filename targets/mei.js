@@ -24,6 +24,8 @@ class Mei {
 
             this._crawler.click('//input[@id="form:btnContinuar"]');
 
+            this._crawler.waitFor('//*[@id="j_id6:downloadBtn"]');
+
             let result = {};
             this.downloadPDF(result).then(() => {
                 result.site = 'MEI-Download PDF';
@@ -44,12 +46,16 @@ class Mei {
 
             this._crawler.executeInflow(() => {
                 const headers = {
-                    'Cookie': '_skinNameCookie=mei;' + cookie,
+                    'Cookie': '_skinNameCookie=mei',
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3380.0 Safari/537.36',
+                    // 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3380.0 Safari/537.36',
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'Accept-Encoding': 'gzip, deflate',
-                    'Accept-Language': 'en-US,en;q=0.9,pt-BR;q=0.8,pt;q=0.7'
+                    'Referer': 'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/certificado_acesso.jsf;jsessionid=' + cookie,
+                    // 'Accept-Language': 'en-US,en;q=0.9,pt-BR;q=0.8,pt;q=0.7'
+                    'DNT': 1,
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': 1,
                 };
                 const body = {
                     'j_id6': 'j_id6',
@@ -62,7 +68,9 @@ class Mei {
                 // console.log('\nBODY >>>>>>>\n', body);
                 // console.log('\nCOOKIE >>>>>>>\n', cookie);
 
-                this._crawler.driver.controlFlow().wait(this.downloadThroughPost(Mei.URL, headers, body, false, false))
+                this._crawler.driver.controlFlow().wait(this.downloadThroughPost(
+                    'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/certificado.jsf;jsessionid=' + cookie,
+                    headers, body, false, false))
                     .then(pdfBuffer => {
                         result.isPdf = Buffer.from(pdfBuffer).toString().toLowerCase().indexOf('pdf') > -1;
                         writeFileSync(join(__dirname, '..', 'download', 'certificado.pdf'), pdfBuffer, 'binary');
@@ -92,7 +100,7 @@ class Mei {
     }
 
     static get URL() {
-        return 'https://www22.receita.fazenda.gov.br/inscricaomei/private/pages/certificado_acesso.jsf';
+        return 'http://www22.receita.fazenda.gov.br/inscricaomei/private/pages/certificado_acesso.jsf';
     }
 
 }
