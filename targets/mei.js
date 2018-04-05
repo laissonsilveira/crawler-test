@@ -1,8 +1,8 @@
 'use strict';
 const request = require('request');
 const qs = require('querystring');
-const { writeFileSync, existsSync, mkdirSync } = require('fs');
-const { join } = require('path');
+// const { writeFileSync, existsSync, mkdirSync } = require('fs');
+// const { join } = require('path');
 const LOGGER = require('../util/logger');
 
 class Mei {
@@ -79,12 +79,12 @@ class Mei {
                     .then(pdfBuffer => {
                         const pdfStr = Buffer.from(pdfBuffer).toString();
                         result.successDownload = /(Title\(Certificado da Condi)(.*?)(o de Microempreendedor Individual\))/g.test(pdfStr);
-
-                        const filePath = join(__dirname, '..', 'download');
-                        if (!existsSync(filePath)) {
-                            mkdirSync(filePath);
-                        }
-                        writeFileSync(join(filePath, 'certificado.pdf'), pdfBuffer, 'binary');
+                        result.pdf = pdfBuffer;
+                        // const filePath = join(__dirname, '..', 'download');
+                        // if (!existsSync(filePath)) {
+                        //     mkdirSync(filePath);
+                        // }
+                        // writeFileSync(join(filePath, 'certificado.pdf'), pdfBuffer, 'binary');
 
                         LOGGER.info('FINALIZADO coleta do MEI');
                     })

@@ -21,8 +21,8 @@ class Simplify {
     }
 
     static get URL() {
-        // return 'http://admin.simplifyzone.com.br/app/#!/login';
-        return 'http://localhost:3000/app/#!/login';
+        return 'http://admin.simplifyzone.com.br/app/#!/login';
+        // return 'http://localhost:3000/app/#!/login';
     }
 
 }
