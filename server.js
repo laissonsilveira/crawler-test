@@ -4,16 +4,18 @@ const request = require('request');
 const { writeFileSync, existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
 const app = express();
-app.get('/pdf-mei', function (req, res) {
+
+app.get('/:target', function (req, res) {
     const { init } = require('./collect');
-    init('mei').then(result => {
+    init(req.params.target).then(result => {
         res.send(result);
     });
 });
+
 app.get('/download-pdf', function (req, response) {
     const options = {
         method: 'GET',
-        url: 'http://localhost:3001/pdf-mei'
+        url: 'http://localhost:3001/mei'
     };
 
     request(options, function (err, res, body) {

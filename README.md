@@ -1,4 +1,4 @@
-> Obs: Projeto apenas para fins de testes
+> PS: Project for test purposes only
 
 ### Install project
 
@@ -10,9 +10,30 @@
 
 ### Start project
 
-    npm start <nome do site_arquivo> <navegador>
-   
-   Navegadores: chrome/phantomjs
+Important settings for running on `config-app.json`:
+    
+```javascript
+{
+ ...
+	"name": "chrome", //<chrome/phantomjs>
+	"isHeadless": true //<true/false>
+ ...
+}
+```
+    
+The execution can be done with the command:
+
+```bash
+npm start <nome do site_arquivo> <navegador> <optional - isHeadless>
+ex: npm start simplify OR npm start simplify chrome OR npm start simplify chrome false
+```
+OR    
+
+```
+node server.js
+Init collect in 'http://localhost:3001/<target>' - ex: http://localhost:3001/simplify
+```
 
 ### Selenium api documents
-http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/
+
+[selenium-webdriver Docs](http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/)
