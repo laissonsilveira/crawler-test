@@ -19,7 +19,7 @@ app.get('/download-pdf', function (req, response) {
     };
 
     request(options, function (err, res, body) {
-        if (err) throw new Error(err)
+        if (err) throw new Error(err);
         const filePath = join(__dirname, 'download');
         if (!existsSync(filePath)) {
             mkdirSync(filePath);

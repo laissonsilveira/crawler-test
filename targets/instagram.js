@@ -19,13 +19,10 @@ class Instagram {
                 var media = _sharedData.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media;
 
                 window.instagram = {
-                    totalPosts: media.count,
-                    posts: []
+                    totalPosts: media.count
                 };
 
-                media.edges.forEach(function(item) {
-                    window.instagram.posts.push({ node: item })
-                });
+                window.instagram.posts = media.edges;
 
                 var origOpen = XMLHttpRequest.prototype.open;
 
@@ -76,7 +73,7 @@ class Instagram {
                 }
 
                 this.getPosts().then(posts => {
-                    resolve(posts);
+                    resolve(Instagram.populatePost(posts));
                 });
 
             });
@@ -110,6 +107,46 @@ class Instagram {
             this._crawler.loggerInfo(`Coletando ${result.totalFound} de ${result.totalPosts}`, false);
         });
 
+    }
+
+    static populatePost(postData) {
+        return postData.reduce((posts, post) => {
+            post = post.node;
+
+            let caption = post.caption;
+            if (post.edge_media_to_caption && post.edge_media_to_caption.edges[0]) {
+                caption = post.edge_media_to_caption.edges[0].node.text;
+            }
+
+            let mentions = caption && caption.length != 0 && caption.match(/@[A-Za-z0-9._-]*/g) || null;
+
+            let postObj = {
+                dataPublicacao: (post.taken_at_timestamp || post.date) * 1000,
+                imagens: [post.display_url || post.display_src],
+                texto: caption ? caption : '',
+                url: `${Instagram.URL}p/${post.code || post.shortcode}`,
+                idPublicacao: post.id
+            };
+
+            if (mentions) {
+                postObj['mencoes'] = mentions.map(function (item) {
+                    item = item.replace('@', '');
+
+                    if (item && item.endsWith && item.endsWith('.')) {
+                        item = item.slice(0, item.length - 1);
+                    }
+
+                    let mention = {
+                        'conta': item,
+                        'idInstagram': item,
+                        'urlPerfil': Instagram.URL + item
+                    };
+                    return mention;
+                });
+            }
+            posts.push(postObj);
+            return posts;
+        }, []);
     }
 
     static get URL() {
