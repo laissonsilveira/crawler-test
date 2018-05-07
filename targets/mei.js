@@ -3,7 +3,6 @@ const request = require('request');
 const qs = require('querystring');
 // const { writeFileSync, existsSync, mkdirSync } = require('fs');
 // const { join } = require('path');
-const LOGGER = require('../util/logger');
 
 class Mei {
 
@@ -17,7 +16,7 @@ class Mei {
     execute() {
         return new Promise(resolve => {
 
-            LOGGER.info('INICIANDO coleta do MEI');
+            this.loggerInfo('INICIANDO coleta do MEI');
 
             this._crawler.type('04156228916', '//input[@id="meiMB_cpf"]');
             this._crawler.type('14/08/1984', '//input[@id="meiMB_dataNascimento"]');
@@ -67,7 +66,7 @@ class Mei {
                     'javax.faces.ViewState': viewStateValue
                 };
 
-                LOGGER.debug(`Efetuando download do PDF...
+                this._crawler.loggerDebug(`Efetuando download do PDF...
                     HEADER >>>>>>>\n', ${headers}
                     BODY >>>>>>>\n', ${body}
                     COOKIE >>>>>>>\n', ${cookieSessionID}
@@ -86,9 +85,9 @@ class Mei {
                         // }
                         // writeFileSync(join(filePath, 'certificado.pdf'), pdfBuffer, 'binary');
 
-                        LOGGER.info('FINALIZADO coleta do MEI');
+                        this._crawler.loggerInfo('FINALIZADO coleta do MEI');
                     })
-                    .catch(err => LOGGER.error(err));
+                    .catch(err => this._crawler.loggerError(err));
             });
         });
     }

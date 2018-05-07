@@ -1,6 +1,6 @@
 'use strict';
 global.__CONFIG = require('./config-app');
-const LOGGER = require('./util/logger');
+const LOGGER = require('./utils/logger');
 
 module.exports = {
     init: function (target) {
@@ -13,7 +13,10 @@ module.exports = {
                 LOGGER.debug('Finished... RESULT:', JSON.stringify(result, null, 4));
                 crawlerTest.quit();
                 resolve(result);
-            }).catch(err => LOGGER.error(err))
+            }).catch(err => {
+                crawlerTest.takeScreenshot();
+                throw err;
+            });
         })
     }
 };

@@ -2,7 +2,7 @@
     'use strict';
 
     const { Builder, Capabilities, logging } = require('selenium-webdriver');
-    const LOGGER = require('../util/logger');
+    const LOGGER = require('../utils/logger');
 
     class Core {
 
@@ -29,11 +29,11 @@
             caps.set("phantomjs.cli.args", args);
             caps.set('phantomjs.page.settings.userAgent', __CONFIG.browser.userAgent);
             // caps.set('phantomjs.page.settings.encoding', 'ISO-8859-1');
-            caps.set("phantomjs.page.customHeaders." + "Accept-Language", __CONFIG.browser.language);
+            caps.set('phantomjs.page.customHeaders.Accept-Language', __CONFIG.browser.language);
             // caps.set("phantomjs.page.customHeaders."+ "Accept", 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
             // caps.set("phantomjs.page.customHeaders."+ "Upgrade-Insecure-Requests", '1');
             // caps.set("phantomjs.page.customHeaders."+ "Accept-Encoding", 'gzip, deflate');
-            // caps.set("phantomjs.binary.path", '/phantomjs-2.1.1');
+            caps.set('phantomjs.binary.path', '/Users/laissonsilveira/AmbienteDev/Setup/phantomjs-2.1.1-macosx/bin/phantomjs');
 
             return new Builder().withCapabilities(caps).build();
         }
@@ -76,7 +76,7 @@
             logging.installConsoleHandler();
             logging.getLogger('webdriver.http').setLevel(logging.Level[__CONFIG.logLevel]);
 
-            browser = browser || __CONFIG.browser.name || 'phantomjs';
+            browser = browser || __CONFIG.browser.name || 'chrome';
 
             LOGGER.info('Browser escolhido: ' + browser);
 

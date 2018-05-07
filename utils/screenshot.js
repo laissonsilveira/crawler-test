@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 const fs = require('fs'),
     path = require('path'),
     moment = require('moment'),
-    LOGGER = require('./logger').winston;
+    LOGGER = require('./logger');
 
 /**
  * @author Laisson R. Silveira
