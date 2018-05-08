@@ -12,38 +12,34 @@ class Instagram {
     execute() {
         return new Promise(resolve => {
 
-            // this.crawler.takeScreenshot();
-
             function populatePosts() {
 
-                var media = _sharedData.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media;
+                var media = _sharedData.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media;//eslint-disable-line
 
                 window.instagram = {
-                    totalPosts: media.count
+                    totalPosts: media.count,
+                    posts: media.edges
                 };
-
-                window.instagram.posts = media.edges;
 
                 var origOpen = XMLHttpRequest.prototype.open;
-
                 XMLHttpRequest.prototype.open = function () {
-
                     this.addEventListener('load', function () {
-                        const response = JSON.parse(this.responseText);
+                        var response = JSON.parse(this.responseText);
+                        console.log('response :', response);
                         if (response.data) {
                             window.instagram.posts = window.instagram.posts.concat(response.data.user.edge_owner_to_timeline_media.edges);
+                            console.log('posts :', window.instagram.posts);
                         }
                     });
-
                     origOpen.apply(this, arguments);
-
                 };
-
                 return {
                     totalPosts: window.instagram.totalPosts,
                     totalFound: window.instagram.posts.length
                 };
             }
+
+            // this._crawler.driver.manage().window().maximize();
 
             this._crawler.authenticate({
                 loginURL: LOGIN_URL,
@@ -65,17 +61,13 @@ class Instagram {
             this._crawler.executeInflow(() => this._crawler.loggerInfo('Iniciando execução script..'));
 
             this._crawler.executeScript(populatePosts).then(result => {
-
                 this._crawler.loggerInfo(`Coletando ${result.totalFound} de ${result.totalPosts}`, false);
-
                 if (result.totalFound < result.totalPosts) {
                     this.scroll();
                 }
-
                 this.getPosts().then(posts => {
                     resolve(Instagram.populatePost(posts));
                 });
-
             });
         });
     }
@@ -101,10 +93,10 @@ class Instagram {
                 totalFound: window.instagram.posts.length
             };
         }).then(result => {
+            this._crawler.loggerInfo(`Coletando ${result.totalFound} de ${result.totalPosts}`, false);
             if (result.totalPosts > result.totalFound) {
                 this.scroll();
             }
-            this._crawler.loggerInfo(`Coletando ${result.totalFound} de ${result.totalPosts}`, false);
         });
 
     }

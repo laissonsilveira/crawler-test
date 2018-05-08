@@ -9,6 +9,7 @@ function saveResult(data, fileName) {
 }
 
 function init(target) {
+    process.argv[2] = target;
     const CrawlerTest = require('./src/crawlerTest');
     const Site = require(`./targets/${target}`);
     const crawlerTest = new CrawlerTest(Site.URL);
