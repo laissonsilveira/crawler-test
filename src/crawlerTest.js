@@ -78,7 +78,7 @@ class CrawlerTest {
     authenticate(dto) {
         this.goTo(dto.loginURL);
         dto.beforeLogin && this.executeInflow(dto.beforeLogin);
-        const cookies = dto.user.data;
+        const cookies = `${process.argv[2]}-${dto.user.data}`;
         const cookieManager = new CookieManager(cookies, this._driver);
 
         if (dto.cookies && cookieManager.exists()) {
