@@ -25,10 +25,8 @@ class Instagram {
                 XMLHttpRequest.prototype.open = function () {
                     this.addEventListener('load', function () {
                         var response = JSON.parse(this.responseText);
-                        console.log('response :', response);
                         if (response.data) {
                             window.instagram.posts = window.instagram.posts.concat(response.data.user.edge_owner_to_timeline_media.edges);
-                            console.log('posts :', window.instagram.posts);
                         }
                     });
                     origOpen.apply(this, arguments);
